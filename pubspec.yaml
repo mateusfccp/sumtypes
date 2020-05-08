@@ -1,0 +1,13 @@
+name: adt
+description: Algebraic Data Types
+version: 0.0.1
+homepage: https://github.com/mateusfccp/magiceye
+repository: https://github.com/mateusfccp/magiceye
+
+environment:
+  sdk: ">=2.7.0 <3.0.0"
+
+dependencies:
+  build: ^1.2.2
+  source_gen: ^0.9.5
+  

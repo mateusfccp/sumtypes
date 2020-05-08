@@ -1,0 +1,9 @@
+library adt.builder;
+
+import 'package:build/build.dart';
+import 'package:source_gen/source_gen.dart';
+
+import 'src/algebraic_generator.dart';
+
+Builder algebraicBuilder(BuilderOptions options) =>
+    SharedPartBuilder([AlgebraicGenerator()], 'multiply');
