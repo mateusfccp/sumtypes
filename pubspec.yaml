@@ -10,4 +10,3 @@ environment:
 dependencies:
   build: ^1.2.2
   source_gen: ^0.9.5
-  
