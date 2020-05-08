@@ -1,8 +1,8 @@
-import 'package:adt/annotations.dart';
+import 'package:sumtypes/annotations.dart';
 
 part 'test.g.dart';
 
-@Algebraic([
+@Sumtype([
   T0('JsonNull'),
   T1<bool>('JsonBool'),
   T1<num>('JsonNumber'),
@@ -14,7 +14,7 @@ abstract class JsonValue {
   const JsonValue();
 }
 
-@Algebraic([
+@Sumtype([
   T0('Nil'),
   T2<R0, IList<R0>>('Cons'),
 ])

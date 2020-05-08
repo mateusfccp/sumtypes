@@ -1,9 +1,9 @@
-library adt.builder;
+library sumtypes.builder;
 
 import 'package:build/build.dart';
 import 'package:source_gen/source_gen.dart';
 
-import 'src/algebraic_generator.dart';
+import 'src/sumtype_generator.dart';
 
-Builder algebraicBuilder(BuilderOptions options) =>
-    SharedPartBuilder([AlgebraicGenerator()], 'multiply');
+Builder sumtypeBuilder(BuilderOptions options) =>
+    SharedPartBuilder([SumtypeGenerator()], 'multiply');

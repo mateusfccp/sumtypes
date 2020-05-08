@@ -1,13 +1,13 @@
 name: example
-description: Algebraic Data Types
+description: sumtypes package example
 version: 0.0.1
-homepage: https://github.com/mateusfccp/magiceye
-repository: https://github.com/mateusfccp/magiceye
+homepage: https://github.com/mateusfccp/sumtypes
+repository: https://github.com/mateusfccp/sumtypes
 
 environment:
   sdk: ">=2.7.0 <3.0.0"
 
 dev_dependencies:
-  adt:
+  sumtypes:
     path: ../
   build_runner: ^1.8.0

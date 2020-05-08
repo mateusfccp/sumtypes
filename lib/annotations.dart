@@ -1,7 +1,9 @@
-class Algebraic {
+library sumtypes.annotations;
+
+class Sumtype {
   final List<AlgebraicType> type;
 
-  const Algebraic(this.type);
+  const Sumtype(this.type);
 }
 
 abstract class AlgebraicType {

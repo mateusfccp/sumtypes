@@ -1,8 +1,8 @@
 builders:
-  adt_generator:
-    import: "package:adt/builder.dart"
-    builder_factories: ["algebraicBuilder"]
-    build_extensions: {".dart": ["adt.g.part"]}
+  sumtypes_generator:
+    import: "package:sumtypes/builder.dart"
+    builder_factories: ["sumtypeBuilder"]
+    build_extensions: {".dart": ["sumtypes.g.part"]}
     auto_apply: dependents
     build_to: cache
     applies_builders: ["source_gen|combining_builder"]
