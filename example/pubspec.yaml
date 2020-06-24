@@ -6,8 +6,13 @@ repository: https://github.com/mateusfccp/sumtypes
 
 environment:
   sdk: ">=2.7.0 <3.0.0"
+  quiver:
+
+dependencies:
+    sumtypes_annotation:
+      path: ../sumtypes_annotation
 
 dev_dependencies:
   sumtypes:
-    path: ../
+    path: ../sumtypes
   build_runner: ^1.8.0

@@ -1,0 +1,18 @@
+name: sumtypes
+description: Dart safe, generated sum types
+version: 0.0.1
+homepage: https://github.com/mateusfccp/sumtypes
+repository: https://github.com/mateusfccp/sumtypes
+
+environment:
+  sdk: ">=2.7.0 <3.0.0"
+
+dependencies:
+  analyzer: ^0.39.8
+  build: ^1.3.0
+  source_gen: ^0.9.5
+  sumtypes_annotation:
+    path: ../sumtypes_annotation
+
+dev_dependencies:
+  pedantic: ^1.8.0
