@@ -2,12 +2,18 @@ import 'package:analyzer/dart/constant/value.dart';
 import 'package:analyzer/dart/element/element.dart';
 import 'package:analyzer/dart/element/type.dart';
 import 'package:build/src/builder/build_step.dart';
+import 'package:dartz/dartz.dart' hide Option;
 import 'package:source_gen/source_gen.dart';
+import 'package:sumtypes/src/extension_generator.dart';
 import 'package:sumtypes_annotation/sumtypes_annotation.dart';
 
+import 'extensions/ilist_extensions.dart';
+import 'subgenerators/class_generator.dart';
 import 'subgenerators/constructor_generator.dart';
 import 'subgenerators/declarations_generator.dart';
-import 'sumtype_subgenerator.dart';
+import 'subgenerators/fold_generator.dart';
+import 'variant.dart';
+import 'variant_generator.dart';
 
 class SumtypeGenerator extends GeneratorForAnnotation<Sumtype> {
   @override
@@ -38,63 +44,55 @@ class SumtypeGenerator extends GeneratorForAnnotation<Sumtype> {
       );
     }
 
-    final objects = annotation.read('type').listValue;
+    final sumtype = element as ClassElement;
+
+    final variants = IList.sequenceOption<Variant>(
+      IList.from(annotation.read('type').listValue).mapWithIndex(
+        (index, object) => Variant.fromObject(sumtype, object, index),
+      ),
+    );
 
     final options =
         annotation.read('generators').listValue.map(_optionfromDartObject);
 
-    final generators = [
+    final variantsGenerators = [
       Declarations,
       Constructor,
-      ...options.map(SumtypeSubgenerator.from),
+      ...options
+          .map(VariantGenerator.from)
+          .where((generator) => generator != null),
     ];
 
-    final classes = objects
-        .map((object) =>
-            _generateClass(element as ClassElement, object, generators))
-        .join('\n');
+    // Generate each individual class
+    final generatedVariants = variants.fold(
+      () => IList<String>.from([]),
+      (v) => v.map(
+        (variant) =>
+            ClassGenerator(variantsGenerators).generate(sumtype, variant),
+      ),
+    );
+
+    final extensionsGenerators = [
+      FoldGenerator,
+      ...options
+          .map(ExtensionGenerator.from)
+          .where((generator) => generator != null),
+    ];
+
+    final generatedExtensions = variants.fold(
+      () => const <String>[],
+      (v) => extensionsGenerators.map(
+        (generator) => generator.generate(sumtype, v),
+      ),
+    );
 
     return '''
-    $classes
-''';
-  }
-
-  String _generateClass(
-    ClassElement element,
-    DartObject object,
-    Iterable<SumtypeSubgenerator> generators,
-  ) {
-    final className =
-        object.getField('(super)').getField('name').toStringValue();
-    final typeParameters = element.typeParameters.isEmpty
-        ? ''
-        : '<${element.typeParameters.join(', ')}>';
-
-    return '''    
-    class $className$typeParameters extends ${element.name}$typeParameters {
-      ${_generateBody(element, className, object, generators)}
-    }
+    ${generatedVariants.join() | ''}
+    ${generatedExtensions.join()}
     ''';
   }
 
-  String _generateBody(
-    ClassElement element,
-    String className,
-    DartObject object,
-    Iterable<SumtypeSubgenerator> generators,
-  ) {
-    // Get type argumets from main type
-    final types = object.type.typeArguments
-        .map((type) => type.getDisplayString())
-        .toList();
-
-    return generators
-        .where((generator) => generator.generate != null)
-        .map((generator) => generator.generate(element, className, types))
-        .join('\n');
-  }
-
-  Option _optionfromDartObject(DartObject object) {
+  static Option _optionfromDartObject(DartObject object) {
     assert(object != null);
 
     // Find all the enum constants in Option

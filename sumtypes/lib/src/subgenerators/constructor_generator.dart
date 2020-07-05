@@ -1,23 +1,25 @@
 import 'package:analyzer/dart/element/element.dart';
 
-import '../sumtype_subgenerator.dart';
+import '../variant.dart';
+import '../variant_generator.dart';
 
-class _ConstructorGenerator extends SumtypeSubgenerator {
+class _ConstructorGenerator implements VariantGenerator {
   const _ConstructorGenerator();
 
   @override
-  String Function(
-    ClassElement,
-    String,
-    Iterable<String>,
-  ) get generate => (element, className, types) {
-        final isConst = element.constructors[0].isConst;
-        final prefix = isConst ? 'const' : '';
-        final constructorParameters =
-            List<String>.generate(types.length, (i) => 'this.item${i + 1}')
-                .join(', ');
-        return '$prefix $className($constructorParameters);';
-      };
+  String generate(
+    ClassElement element,
+    Variant variant,
+  ) {
+    final isConst = element.constructors[0].isConst;
+    final prefix = isConst ? 'const' : '';
+    final constructorParameters = List<String>.generate(
+      variant.typeArguments.length,
+      (i) => 'this.item${i + 1}',
+    ).join(', ');
+
+    return '$prefix ${variant.name}($constructorParameters);';
+  }
 }
 
 const _ConstructorGenerator Constructor = _ConstructorGenerator();
