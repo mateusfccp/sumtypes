@@ -92,7 +92,7 @@ class SumtypeGenerator extends GeneratorForAnnotation<Sumtype> {
     ''';
   }
 
-  static Option _optionfromDartObject(DartObject object) {
+  static Extension _optionfromDartObject(DartObject object) {
     assert(object != null);
 
     // Find all the enum constants in Option
@@ -111,6 +111,6 @@ class SumtypeGenerator extends GeneratorForAnnotation<Sumtype> {
         .key;
 
     // Return the correspondent Option
-    return Option.values[index];
+    return Extension.values[index];
   }
 }

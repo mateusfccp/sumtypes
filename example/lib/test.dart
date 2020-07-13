@@ -7,7 +7,7 @@ part 'test.g.dart';
   T0('Nil'),
   T2<R0, IList<R0>>('Cons'),
 ], generators: [
-  Option.Eq
+  Extension.Eq
 ])
 abstract class IList<T> {
   const IList();

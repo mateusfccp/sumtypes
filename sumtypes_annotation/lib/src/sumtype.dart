@@ -1,9 +1,9 @@
-import 'options.dart';
+import 'extension.dart';
 import 'types.dart';
 
 class Sumtype {
   final List<Type> type;
-  final List<Option> generators;
+  final List<Extension> generators;
 
   const Sumtype(
     this.type, {
